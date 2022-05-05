@@ -27,11 +27,13 @@ func newRoom() *room {
 func (r *room) run() {
 
 	for {
+		
 		select {
 		case client := <-r.join:
 			log.Println("参加しました")
 			r.clients[client] = true
 		case client := <-r.leave:
+			log.Println("メンバーが抜けました")
 			delete(r.clients, client)
 			close(client.send)
 		case msg := <-r.forward:
